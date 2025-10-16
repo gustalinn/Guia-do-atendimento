@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Identificador de Doenças</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Identificador de Doenças em Animais</h1>
+  </header>
+
+  <main>
+    <!-- Área de seleção de animal -->
+    <section id="animal-section">
+      <h2>Selecione ou adicione um animal</h2>
+      <select id="animalSelect"></select>
+      <input type="text" id="newAnimal" placeholder="Nome do animal">
+      <button id="addAnimalBtn">Adicionar</button>
+    </section>
+
+    <!-- Área de doenças -->
+    <section id="disease-section">
+      <h2>Doenças</h2>
+      <div id="diseasesGrid"></div>
+    </section>
+
+    <!-- Histórico -->
+    <section id="history-section">
+      <h2>Histórico</h2>
+      <ul id="historyList"></ul>
+      <button id="clearAll">Limpar histórico</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
