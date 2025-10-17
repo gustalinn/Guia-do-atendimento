@@ -12,25 +12,41 @@
   </header>
 
   <main>
-    <!-- Área de seleção de animal -->
+    <!-- Cadastro de animal -->
     <section id="animal-section">
-      <h2>Selecione ou adicione um animal</h2>
+      <h2>Cadastrar Animal</h2>
+      <input type="text" id="proprietario" placeholder="Nome do proprietário">
+      <input type="text" id="nomeAnimal" placeholder="Identificação do animal">
+      <input type="text" id="raca" placeholder="Raça (ex: bovina)">
+      <input type="text" id="idade" placeholder="Idade (anos)">
+      <button id="addAnimalBtn">Adicionar Animal</button>
+    </section>
+
+    <!-- Seleção -->
+    <section>
+      <h2>Selecionar Animal</h2>
       <select id="animalSelect"></select>
-      <input type="text" id="newAnimal" placeholder="Nome do animal">
-      <button id="addAnimalBtn">Adicionar</button>
+      <button id="removeAnimalBtn" style="margin-left:10px; background:red;">Remover Animal</button>
     </section>
 
     <!-- Área de doenças -->
     <section id="disease-section">
-      <h2>Doenças</h2>
+      <h2>Sinais Clínicos</h2>
       <div id="diseasesGrid"></div>
     </section>
 
     <!-- Histórico -->
     <section id="history-section">
-      <h2>Histórico</h2>
+      <h2>Histórico do Animal</h2>
+      <div id="animalInfo"></div>
       <ul id="historyList"></ul>
       <button id="clearAll">Limpar histórico</button>
+    </section>
+
+    <!-- Lista de animais cadastrados -->
+    <section id="lista-animais">
+      <h2>Animais Cadastrados</h2>
+      <div id="animaisCadastrados"></div>
     </section>
   </main>
 

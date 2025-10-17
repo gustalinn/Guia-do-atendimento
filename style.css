@@ -24,6 +24,13 @@ section {
   border-radius: 8px;
 }
 
+input, select {
+  padding: 8px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 button {
   background: #0b84ff;
   color: white;
@@ -35,8 +42,10 @@ button {
 
 button:hover {
   background: #0666d9;
+  opacity: 0.9;
 }
 
+/* Cards de doenças */
 .disease-card {
   display: flex;
   justify-content: space-between;
@@ -49,9 +58,54 @@ button:hover {
 
 .disease-card button {
   background: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
+.disease-card button:hover {
+  background: darkgreen;
+}
+
+/* Lista de histórico */
 #historyList li {
   padding: 5px 0;
   border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#historyList li button {
+  font-size: 0.8rem;
+  background: red;
+  color: white;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#historyList li button:hover {
+  opacity: 0.8;
+}
+
+/* Cards de animais cadastrados */
+.animal-card {
+  background: #eef6ff;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border-left: 4px solid #0b84ff;
+}
+
+#removeAnimalBtn {
+  background: red;
+  margin-left: 10px;
+}
+
+#removeAnimalBtn:hover {
+  opacity: 0.8;
 }
