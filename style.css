@@ -109,3 +109,35 @@ button:hover {
 #removeAnimalBtn:hover {
   opacity: 0.8;
 }
+
+/* Forçar tamanho de fonte consistente */
+body, input, select, button {
+  font-family: Arial, sans-serif;
+  font-size: 16px; /* ou outro tamanho que preferir */
+}
+
+/* Inputs e selects com tamanho uniforme */
+input, select {
+  padding: 8px 10px;
+  font-size: 16px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Botões com tamanho uniforme */
+button {
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Ajuste específico para botões pequenos (como remover doença) */
+#historyList li button {
+  font-size: 0.85rem;
+  padding: 4px 6px;
+}
+
