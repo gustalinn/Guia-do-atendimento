@@ -1,12 +1,13 @@
 body {
   font-family: Arial, sans-serif;
-  background: #f5f7fb;
+  background: #e8f5e9; /* verde claro */
+  color: #000;
   margin: 0;
   padding: 20px;
 }
 
 header {
-  background: #0b84ff;
+  background: #1b5e20; /* verde escuro */
   color: white;
   padding: 15px;
   text-align: center;
@@ -25,32 +26,34 @@ section {
 }
 
 input, select {
-  padding: 8px;
+  padding: 8px 10px;
   margin: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 16px;
 }
 
 button {
-  background: #0b84ff;
+  background: #1b5e20;
   color: white;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 button:hover {
-  background: #0666d9;
-  opacity: 0.9;
+  background: #2e7d32;
 }
 
-/* Cards de doenças */
+/* Cards de doenças, vacinas e vermifugos */
 .disease-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #eef6ff;
+  background: #c8e6c9;
   margin-top: 10px;
   padding: 10px;
   border-radius: 6px;
@@ -69,7 +72,6 @@ button:hover {
   background: darkgreen;
 }
 
-/* Lista de histórico */
 #historyList li {
   padding: 5px 0;
   border-bottom: 1px solid #ddd;
@@ -79,11 +81,11 @@ button:hover {
 }
 
 #historyList li button {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  padding: 4px 6px;
   background: red;
   color: white;
   border: none;
-  padding: 3px 6px;
   border-radius: 3px;
   cursor: pointer;
 }
@@ -92,13 +94,13 @@ button:hover {
   opacity: 0.8;
 }
 
-/* Cards de animais cadastrados */
+/* Cards de animais */
 .animal-card {
-  background: #eef6ff;
+  background: #c8e6c9;
   padding: 10px;
   margin-top: 10px;
   border-radius: 6px;
-  border-left: 4px solid #0b84ff;
+  border-left: 4px solid #1b5e20;
 }
 
 #removeAnimalBtn {
@@ -109,35 +111,3 @@ button:hover {
 #removeAnimalBtn:hover {
   opacity: 0.8;
 }
-
-/* Forçar tamanho de fonte consistente */
-body, input, select, button {
-  font-family: Arial, sans-serif;
-  font-size: 16px; /* ou outro tamanho que preferir */
-}
-
-/* Inputs e selects com tamanho uniforme */
-input, select {
-  padding: 8px 10px;
-  font-size: 16px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-/* Botões com tamanho uniforme */
-button {
-  font-size: 16px;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* Ajuste específico para botões pequenos (como remover doença) */
-#historyList li button {
-  font-size: 0.85rem;
-  padding: 4px 6px;
-}
-

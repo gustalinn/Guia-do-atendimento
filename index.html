@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Identificador de Doenças</title>
+  <title>Guia do Atendimento</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header>
-    <h1>Identificador de Doenças em Animais</h1>
+    <h1>Guia do Atendimento</h1>
   </header>
 
   <main>
@@ -18,7 +18,17 @@
       <input type="text" id="proprietario" placeholder="Nome do proprietário">
       <input type="text" id="nomeAnimal" placeholder="Identificação do animal">
       <input type="text" id="raca" placeholder="Raça (ex: bovina)">
-      <input type="text" id="idade" placeholder="Idade (anos)">
+      <input type="text" id="especie" placeholder="Espécie (ex: cão)">
+      <select id="sexo">
+        <option value="">Selecione o sexo</option>
+        <option value="Macho">Macho</option>
+        <option value="Fêmea">Fêmea</option>
+      </select>
+      <input type="number" id="idade" placeholder="Idade (anos)" min="0">
+      <input type="number" id="peso" placeholder="Peso (kg)" min="0" step="0.1">
+      <input type="text" id="endereco" placeholder="Endereço">
+      <input type="text" id="cpf" placeholder="CPF do proprietário">
+      <input type="text" id="telefone" placeholder="Telefone do proprietário">
       <button id="addAnimalBtn">Adicionar Animal</button>
     </section>
 
@@ -26,13 +36,25 @@
     <section>
       <h2>Selecionar Animal</h2>
       <select id="animalSelect"></select>
-      <button id="removeAnimalBtn" style="margin-left:10px; background:red;">Remover Animal</button>
+      <button id="removeAnimalBtn">Remover Animal</button>
     </section>
 
-    <!-- Área de doenças -->
+    <!-- Área de sinais clínicos -->
     <section id="disease-section">
       <h2>Sinais Clínicos</h2>
       <div id="diseasesGrid"></div>
+    </section>
+
+    <!-- Vacinação -->
+    <section id="vaccination-section">
+      <h2>Vacinação</h2>
+      <div id="vaccinationGrid"></div>
+    </section>
+
+    <!-- Vermifugação -->
+    <section id="vermifugacao-section">
+      <h2>Vermifugação</h2>
+      <div id="vermifugacaoGrid"></div>
     </section>
 
     <!-- Histórico -->
