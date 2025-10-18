@@ -1,76 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Guia do Atendimento</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>🐾 Guia do Atendimento</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <header>
-    <h1>Guia do Atendimento</h1>
+    <h1>🐾 Guia do Atendimento</h1>
   </header>
 
-  <main>
-    <!-- Cadastro de animal -->
-    <section id="animal-section">
+  <main class="container">
+    <!-- Cadastro de Animais -->
+    <section class="card">
       <h2>Cadastrar Animal</h2>
-      <input type="text" id="proprietario" placeholder="Nome do proprietário">
-      <input type="text" id="nomeAnimal" placeholder="Identificação do animal">
-      <input type="text" id="raca" placeholder="Raça (ex: bovina)">
-      <input type="text" id="especie" placeholder="Espécie (ex: cão)">
-      <select id="sexo">
-        <option value="">Selecione o sexo</option>
-        <option value="Macho">Macho</option>
-        <option value="Fêmea">Fêmea</option>
-      </select>
-      <input type="number" id="idade" placeholder="Idade (anos)" min="0">
-      <input type="number" id="peso" placeholder="Peso (kg)" min="0" step="0.1">
-      <input type="text" id="endereco" placeholder="Endereço">
-      <input type="text" id="cpf" placeholder="CPF do proprietário">
-      <input type="text" id="telefone" placeholder="Telefone do proprietário">
-      <button id="addAnimalBtn">Adicionar Animal</button>
+      <form id="animalForm">
+        <input type="text" id="proprietario" placeholder="Proprietário" required />
+        <input type="text" id="nomeAnimal" placeholder="Identificação animal" required />
+        <input type="text" id="especie" placeholder="Espécie (ex: Cão)" required />
+        <input type="text" id="raca" placeholder="Raça" required />
+        <input type="number" id="idade" placeholder="Idade (anos)" required />
+        <select id="sexo" required>
+          <option value="">Selecionar Sexo</option>
+          <option value="Macho">Macho</option>
+          <option value="Fêmea">Fêmea</option>
+        </select>
+        <input type="number" id="peso" placeholder="Peso (kg)" required />
+        <input type="text" id="endereco" placeholder="Endereço" required />
+        <input type="text" id="cpf" placeholder="CPF" required />
+        <input type="text" id="telefone" placeholder="Telefone" required />
+        <button type="button" id="addAnimalBtn">Adicionar</button>
+      </form>
     </section>
 
-    <!-- Seleção -->
-    <section>
-      <h2>Selecionar Animal</h2>
-      <select id="animalSelect"></select>
-      <button id="removeAnimalBtn">Remover Animal</button>
-    </section>
-
-    <!-- Área de sinais clínicos -->
-    <section id="disease-section">
-      <h2>Sinais Clínicos</h2>
-      <div id="diseasesGrid"></div>
-    </section>
-
-    <!-- Vacinação -->
-    <section id="vaccination-section">
-      <h2>Vacinação</h2>
-      <div id="vaccinationGrid"></div>
-    </section>
-
-    <!-- Vermifugação -->
-    <section id="vermifugacao-section">
-      <h2>Vermifugação</h2>
-      <div id="vermifugacaoGrid"></div>
-    </section>
-
-    <!-- Histórico -->
-    <section id="history-section">
-      <h2>Histórico do Animal</h2>
-      <div id="animalInfo"></div>
-      <ul id="historyList"></ul>
-      <button id="clearAll">Limpar histórico</button>
-    </section>
-
-    <!-- Lista de animais cadastrados -->
-    <section id="lista-animais">
+    <!-- Animais Cadastrados -->
+    <section class="card">
       <h2>Animais Cadastrados</h2>
       <div id="animaisCadastrados"></div>
     </section>
+
+    <!-- Selecionar Animal -->
+    <section class="card">
+      <h2>Selecionar Animal</h2>
+      <select id="animalSelect"></select>
+      <div class="animal-info" id="animalInfo"></div>
+      <button id="removeAnimalBtn" class="remove-btn">Remover Animal</button>
+    </section>
+
+    <!-- Histórico -->
+    <section class="card">
+      <h2>Histórico</h2>
+      <ul id="historyList"></ul>
+      <button id="clearAll" class="remove-btn">Limpar Histórico</button>
+    </section>
+
+    <!-- Registro de Doenças -->
+    <section class="card">
+      <h2>Doenças</h2>
+      <div id="diseasesGrid" class="grid"></div>
+    </section>
+
+    <!-- Registro de Vacinação -->
+    <section class="card">
+      <h2>Vacinação</h2>
+      <div id="vaccinationGrid" class="grid"></div>
+    </section>
+
+    <!-- Registro de Vermifugação -->
+    <section class="card">
+      <h2>Vermifugação</h2>
+      <div id="vermifugacaoGrid" class="grid"></div>
+    </section>
   </main>
+
+  <footer>
+    <p>Desenvolvido para fins acadêmicos 🐕🐈</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

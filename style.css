@@ -1,54 +1,104 @@
+/* ===== ESTILO GERAL ===== */
 body {
-  font-family: Arial, sans-serif;
-  background: #e8f5e9; /* verde claro */
-  color: #000;
+  background-color: #f9fdf9;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: #333;
   margin: 0;
-  padding: 20px;
+  padding: 0;
 }
 
 header {
-  background: #1b5e20; /* verde escuro */
-  color: white;
-  padding: 15px;
+  background-color: #4caf50;
+  color: #fff;
+  padding: 20px 0;
   text-align: center;
-  border-radius: 8px;
 }
 
-h2 {
-  margin-top: 30px;
+header h1 {
+  margin: 0;
+  font-size: 24px;
 }
 
-section {
-  background: white;
-  padding: 15px;
-  margin-top: 15px;
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: #fff;
   border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #101110;
+}
+
+/* ===== FORMULÁRIO ===== */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 input, select {
-  padding: 8px 10px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #c8e6c9;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+input:focus, select:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px #c8e6c9;
+}
+
+/* ===== LEVANTAMENTO AO PASSAR O MOUSE ===== */
+input:hover, select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* ===== BOTÕES ===== */
 button {
-  background: #1b5e20;
+  background-color: #4caf50;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
+  padding: 10px 16px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
-  background: #2e7d32;
+  background-color: #66bb6a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* Cards de doenças, vacinas e vermifugos */
+.remove-btn {
+  background-color: #e53935;
+}
+
+.remove-btn:hover {
+  background-color: #f44336;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* ===== GRIDS ===== */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .disease-card {
   display: flex;
   justify-content: space-between;
@@ -57,24 +107,66 @@ button:hover {
   margin-top: 10px;
   padding: 10px;
   border-radius: 6px;
+  transition: transform 0.2s ease;
+  word-break: break-word;
 }
 
+.disease-card:hover {
+  transform: scale(1.02);
+}
+
+.disease-card input {
+  flex: 1;
+  margin-right: 8px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #a5d6a7;
+}
+
+/* Botões dentro dos cards */
 .disease-card button {
   background: green;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .disease-card button:hover {
   background: darkgreen;
 }
 
+/* Leptospirose sempre acima de "Especificar" */
+.disease-card.lepto {
+  order: -1;
+}
+
+/* ===== GRID DOS CARDS DE DOENÇAS, VACINAS E VERMIFUGAÇÃO ===== */
+#diseasesGrid, #vaccinationGrid, #vermifugacaoGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px;
+  max-height: 700px;
+  overflow-y: auto;
+  background: #f1f8f3;
+  border-radius: 8px;
+}
+
+/* ===== HISTÓRICO ===== */
+#historyList {
+  padding: 0;
+  list-style: none;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
 #historyList li {
-  padding: 5px 0;
-  border-bottom: 1px solid #ddd;
+  margin-bottom: 12px;
+  padding-left: 10px;
+  border-left: 3px solid #4caf50;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,7 +175,7 @@ button:hover {
 #historyList li button {
   font-size: 0.85rem;
   padding: 4px 6px;
-  background: red;
+  background: #e53935;
   color: white;
   border: none;
   border-radius: 3px;
@@ -94,20 +186,109 @@ button:hover {
   opacity: 0.8;
 }
 
-/* Cards de animais */
-.animal-card {
-  background: #c8e6c9;
+/* ===== ANIMAIS CADASTRADOS ===== */
+#animaisCadastrados {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
   padding: 10px;
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+/* ===== CARD DE ESPÉCIE ===== */
+.especie-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.especie-card:hover {
+  background-color: #c8e6c9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.especie-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.especie-card .count {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ===== GRID DE ANIMAIS DENTRO DA ESPÉCIE ===== */
+.animal-grid {
   margin-top: 10px;
-  border-radius: 6px;
-  border-left: 4px solid #1b5e20;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 15px;
 }
 
-#removeAnimalBtn {
-  background: red;
-  margin-left: 10px;
+/* ===== CARD DE ANIMAL ===== */
+.animal-card {
+  background-color: #ffffff;
+  color: #000;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+  word-break: break-word;
 }
 
-#removeAnimalBtn:hover {
-  opacity: 0.8;
+.animal-card:hover {
+  transform: scale(1.02);
+}
+
+.animal-card h3 {
+  color: #101110;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.animal-card p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.animal-card strong {
+  color: #333;
+}
+
+/* ===== RODAPÉ ===== */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #4caf50;
+  color: white;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    flex-direction: column;
+  }
+
+  .animal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== ANIMAÇÃO ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
