@@ -151,15 +151,44 @@ animalSelect.addEventListener('change', () => {
 });
 
 // ===== ADICIONAR OBSERVAÇÃO =====
-function addObservacao(tipo, id, descricao) {
+function addObservacao(tipo, nomeDoenca, descricao) {
+  const animalId = animalSelect.value;
+  if (!animalId) return alert('Selecione um animal para adicionar a observação!');
+
+  let tipoReal = tipo;
+  let descricaoCompleta = descricao;
+
+  if (tipo === 'doenca_outros') tipoReal = 'doenca';
+  else if (tipo === 'vacina_outros') tipoReal = 'vacina';
+  else if (tipo === 'vermifugo_outros') tipoReal = 'vermifugo';
+
+  if (tipoReal === 'doenca' && nomeDoenca) {
+    descricaoCompleta = `${nomeDoenca} (${descricao})`;
+  } else if (tipo.endsWith('_outros')) {
+    descricaoCompleta = capitalize(descricao); // garante primeira letra maiúscula para "especificar"
+  } else {
+    descricaoCompleta = descricao; // mantém como veio
+  }
+
+  // ✅ Validação ignorando maiúsculas/minúsculas
+  const existe = observacoes.some(o => 
+    o.animalId === animalId &&
+    o.tipo === tipoReal &&
+    (o.diseaseId || null) === (nomeDoenca || null) &&
+    o.descricao.toLowerCase() === descricaoCompleta.toLowerCase()
+  );
+
+  if (existe) return alert('Esta observação já foi adicionada!');
+
   observacoes.push({
     id: Date.now().toString(),
-    animalId: animalSelect.value,
-    diseaseId: id,
-    descricao,
+    animalId,
+    diseaseId: nomeDoenca || null,
+    descricao: descricaoCompleta,
     timestamp: new Date().toLocaleString(),
-    tipo
+    tipo: tipoReal
   });
+
   renderHistorico();
   renderAnimaisCadastrados();
   salvarLocalStorage();
@@ -170,36 +199,106 @@ function renderDoencas() { renderItems(DOENCIAS, diseasesGrid, 'doenca'); }
 function renderVaccinations() { renderItems(VACINAS, document.getElementById('vaccinationGrid'), 'vacina'); }
 function renderVermifugos() { renderItems(VERMIFUGOS, document.getElementById('vermifugacaoGrid'), 'vermifugo'); }
 
+const SINTOMAS = [
+  'Cio repetido',
+  'Abortos',
+  'Anorexia',
+  'Apatia',
+  'Diarreia',
+  'Letargia',
+  'Mialgia',
+  'Icterícia'
+];
+
 function renderItems(array, container, tipo) {
   container.innerHTML = '';
   array.forEach(item => {
+    // row principal (.disease-card)
     const div = document.createElement('div');
     div.className = 'disease-card';
+
     if (item.id === 'outros') {
-      div.innerHTML = `<input type="text" placeholder="Especificar..." class="specInput">
-                       <button data-id="${item.id}">+</button>`;
+      // para "outros" mantenha input + botão inline
+      div.innerHTML = `
+        <input type="text" placeholder="Especificar..." class="specInput">
+        <button data-id="${item.id}">adicionar</button>
+      `;
+      const btn = div.querySelector('button');
+      btn.addEventListener('click', () => {
+        const input = div.querySelector('.specInput');
+        const val = input.value.trim();
+        if (!val) return alert('Digite algo!');
+        addObservacao(`${tipo}_outros`, null, val);
+        input.value = '';
+      });
+      container.appendChild(div);
+      // não criamos card de sintomas para "outros"
     } else {
-      div.innerHTML = `<span>${item.nome}</span><button data-id="${item.id}">+</button>`;
+      // para itens normais: nome + botão em linha
+      // garantir que o nome esteja dentro de <span> (usado pelo CSS flex)
+      div.innerHTML = `<span class="disease-name">${item.nome}</span><button data-id="${item.id}" class="toggle-sintomas">+</button>`;
+      const btn = div.querySelector('button');
+
+      // armazenar estado do card (se aberto) via dataset
+      btn.dataset.open = 'false';
+
+      // clique -> abre/fecha card (card será criado como IRMÃO abaixo do div)
+      btn.addEventListener('click', () => {
+        // botão abre/fecha o card que está imediatamente depois do div (se existir)
+        const next = div.nextElementSibling;
+        const isSintomasCard = next && next.classList && next.classList.contains('sintomas-card');
+
+        if (isSintomasCard) {
+          // se já existe card de sintomas logo abaixo, remove-o e atualizar botão
+          next.remove();
+          btn.textContent = '+';
+          btn.dataset.open = 'false';
+        } else {
+          // cria e insere o card de sintomas logo após o div (como sibling)
+          renderSintomas(div, tipo, item.nome, btn);
+          btn.textContent = '-';
+          btn.dataset.open = 'true';
+        }
+      });
+
+      container.appendChild(div);
+      // não inserir sintomas aqui — serão inseridos como sibling quando botão for clicado
     }
-    container.appendChild(div);
+  });
+}
+
+// Função para renderizar os sintomas como botões
+function renderSintomas(parentDiv, tipo, nomeDoenca, toggleBtn) {
+  // cria o card de sintomas (como elemento separado)
+  const card = document.createElement('div');
+  card.className = 'sintomas-card';
+
+  // cria os botões de sintomas
+  SINTOMAS.forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s;
+    b.style.padding = '6px 10px';
+    b.style.border = 'none';
+    b.style.borderRadius = '4px';
+    b.style.cursor = 'pointer';
+    b.style.fontSize = '0.85rem';
+    // não mexer nas cores aqui — seus estilos globais para .disease-card button não afetam esses
+    b.addEventListener('click', () => {
+      // exige seleção de animal ao adicionar observação
+      if (!animalSelect.value) return alert('Selecione um animal para adicionar a observação!');
+      addObservacao(tipo, nomeDoenca, s);
+    });
+    card.appendChild(b);
   });
 
-  container.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (!animalSelect.value) return alert('Selecione um animal primeiro!');
-      const id = btn.getAttribute('data-id');
-      let descricao = '';
-      if (id === 'outros') {
-        const input = btn.parentElement.querySelector('.specInput');
-        descricao = input.value.trim();
-        if (!descricao) return alert('Digite algo para especificar.');
-        input.value = '';
-      } else {
-        descricao = array.find(d => d.id === id)?.nome;
-      }
-      addObservacao(tipo, id, descricao);
-    });
-  });
+  // inserir o card como sibling logo após o parentDiv
+  if (parentDiv.parentNode) {
+    parentDiv.parentNode.insertBefore(card, parentDiv.nextSibling);
+  } else {
+    // fallback: append no parentDiv (não ideal), mas normalmente parentNode existe
+    parentDiv.appendChild(card);
+  }
 }
 
 // ===== HISTÓRICO =====
@@ -232,7 +331,7 @@ function renderHistorico() {
   obsAnimal.forEach(o => {
     let tipoLabel = o.tipo === 'doenca' ? 'Doença' : o.tipo === 'vacina' ? 'Vacina' : 'Vermífugo';
     const li = document.createElement('li');
-    li.textContent = `${tipoLabel}: ${o.descricao} - ${o.timestamp}`;
+    li.textContent = `${tipoLabel}: ${capitalize(o.descricao)} - ${o.timestamp}`;
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'Remover';
     removeBtn.onclick = () => {
@@ -251,6 +350,7 @@ function renderHistorico() {
 clearAllBtn.onclick = () => {
   const animalId = animalSelect.value;
   if (!animalId) return;
+  if (!confirm('Tem certeza que deseja apagar todo o histórico deste animal?')) return;
   observacoes = observacoes.filter(o => o.animalId !== animalId);
   renderHistorico();
   renderAnimaisCadastrados();
@@ -294,7 +394,32 @@ function renderAnimaisCadastrados() {
 
     grupo.forEach(a => {
       const obsAnimal = observacoes.filter(o => o.animalId === a.id);
-      const doencas = obsAnimal.filter(o => o.tipo === 'doenca').map(d => capitalize(d.descricao));
+
+      // AGRUPAR sintomas por doença
+      const doencasMap = {};   
+      const outrasDoencas = []; 
+
+      obsAnimal.filter(o => o.tipo === 'doenca' || o.tipo === 'doenca_outros').forEach(d => {
+        if (d.tipo === 'doenca_outros') {
+          outrasDoencas.push(d.descricao);
+        } else {
+          const match = d.descricao.match(/^([^()]+)\s*\((.+)\)$/); 
+          if (match) {
+            const nome = match[1].trim();
+            const sintoma = match[2].trim();
+            if (!doencasMap[nome]) doencasMap[nome] = [];
+            if (!doencasMap[nome].includes(sintoma)) doencasMap[nome].push(sintoma);
+          } else {
+            if (!doencasMap[d.descricao]) doencasMap[d.descricao] = [];
+          }
+        }
+      });
+
+      const doencasStr = [
+        ...Object.entries(doencasMap).map(([nome, sintomas]) => nome + (sintomas.length ? ` (${sintomas.join(', ')})` : '')),
+        ...outrasDoencas
+      ].join(', ') || 'Nenhuma';
+
       const vacinas = obsAnimal.filter(o => o.tipo === 'vacina').map(v => capitalize(v.descricao));
       const vermifugos = obsAnimal.filter(o => o.tipo === 'vermifugo').map(v => capitalize(v.descricao));
 
@@ -310,7 +435,7 @@ function renderAnimaisCadastrados() {
         <p><strong>Endereço:</strong> ${capitalize(a.endereco)}</p>
         <p><strong>CPF:</strong> ${a.cpf}</p>
         <p><strong>Telefone:</strong> ${a.telefone}</p>
-        <p><strong>Doenças:</strong> ${doencas.length ? doencas.join(', ') : 'Nenhuma'}</p>
+        <p><strong>Doenças:</strong> ${doencasStr}</p>
         <p><strong>Vacinas:</strong> ${vacinas.length ? vacinas.join(', ') : 'Nenhuma'}</p>
         <p><strong>Vermifugação:</strong> ${vermifugos.length ? vermifugos.join(', ') : 'Nenhuma'}</p>
       `;

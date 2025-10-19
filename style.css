@@ -138,6 +138,19 @@ button:hover {
   background: darkgreen;
 }
 
+/* estilo do card de sintomas que aparece abaixo do disease-card */
+.sintomas-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0 0;
+  padding: 8px;
+  background: #f1f8f3;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* Leptospirose sempre acima de "Especificar" */
 .disease-card.lepto {
   order: -1;
