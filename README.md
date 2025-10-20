@@ -47,6 +47,7 @@ Sistema web para cadastro, gerenciamento e histórico de atendimento de animais,
 ---
 
 ## 📂 Estrutura do Projeto
+
 /guia-atendimento/
 │
 ├── index.html # Página principal
