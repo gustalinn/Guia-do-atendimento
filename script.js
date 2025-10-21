@@ -91,6 +91,7 @@ function salvarLocalStorage() {
 
 // ===== ADICIONAR ANIMAL =====
 addAnimalBtn.addEventListener('click', () => {
+  // Pegando valores
   let nome = capitalize(nomeAnimal.value.trim());
   let prop = capitalize(proprietario.value.trim());
   let r = capitalize(raca.value.trim());
@@ -102,24 +103,83 @@ addAnimalBtn.addEventListener('click', () => {
   let cpf = cpfInput.value.trim();
   let telefone = telefoneInput.value.trim();
 
-  if (!nome || !prop || !r || !i || !especie || !sexo || !peso || !endereco || !cpf || !telefone)
-    return alert('Preencha todos os campos!');
-  if (isNaN(i) || Number(i) < 0) return alert('Digite uma idade válida');
-  if (isNaN(peso) || Number(peso) <= 0) return alert('Digite um peso válido');
+  // Lista de campos com seus elementos
+  const campos = [
+    { el: nomeAnimal, val: nome },
+    { el: proprietario, val: prop },
+    { el: raca, val: r },
+    { el: idade, val: i },
+    { el: especieInput, val: especie },
+    { el: sexoInput, val: sexo },
+    { el: pesoInput, val: peso },
+    { el: enderecoInput, val: endereco },
+    { el: cpfInput, val: cpf },
+    { el: telefoneInput, val: telefone }
+  ];
 
+  let camposInvalidos = false;
+
+  // Resetar bordas
+  campos.forEach(c => c.el.style.borderColor = '#c8e6c9');
+
+  // Verifica campos vazios
+  campos.forEach(c => {
+    if (!c.val) {
+      c.el.style.borderColor = 'red';
+      camposInvalidos = true;
+    }
+  });
+
+  if (camposInvalidos) return alert('Preencha todos os campos corretamente!');
+
+  // Validar idade
+  if (isNaN(i) || Number(i) < 0) {
+    idade.style.borderColor = 'red';
+    return alert('Digite uma idade válida');
+  }
+
+  // Validar peso
+  if (isNaN(peso) || Number(peso) <= 0) {
+    pesoInput.style.borderColor = 'red';
+    return alert('Digite um peso válido');
+  }
+
+  // Formatar CPF
   cpf = formatCPF(cpf);
-  if (!validarCPF(cpf)) return alert('CPF inválido!');
+  if (!validarCPF(cpf)) {
+    cpfInput.style.borderColor = 'red';
+    return alert('O CPF Precisa ter 11 Números!');
+  }
+
   telefone = formatTelefone(telefone);
 
+  // Salvar animal
   const id = Date.now().toString();
   animais.push({ id, nome, proprietario: prop, raca: r, idade: i, especie, sexo, peso, endereco, cpf, telefone });
 
-  // Limpar campos
-  nomeAnimal.value = proprietario.value = raca.value = idade.value = especieInput.value = sexoInput.value = pesoInput.value = enderecoInput.value = cpfInput.value = telefoneInput.value = '';
+  // Limpar campos e resetar bordas
+  campos.forEach(c => {
+    c.el.value = '';
+    c.el.style.borderColor = '#c8e6c9';
+  });
+  sexoInput.value = '';
+
+  // Resetar seleção de animal e info
+  animalSelect.value = '';
+  animalInfoDiv.innerHTML = '';
+  historyList.innerHTML = '';
 
   atualizarAnimais();
   renderAnimaisCadastrados();
   salvarLocalStorage();
+});
+
+// ===== RESETAR BORDA AO DIGITAR =====
+const todosCampos = [nomeAnimal, proprietario, raca, idade, especieInput, sexoInput, pesoInput, enderecoInput, cpfInput, telefoneInput];
+todosCampos.forEach(campo => {
+  campo.addEventListener('input', () => {
+    campo.style.borderColor = '#c8e6c9';
+  });
 });
 
 // ===== ATUALIZAR <select> ANIMAIS =====
@@ -132,7 +192,17 @@ function atualizarAnimais() {
   defaultOpt.textContent = 'Nenhuma opção';
   animalSelect.appendChild(defaultOpt);
 
-  animais.forEach(a => {
+  // Ordenar animais por espécie e depois por nome
+  const animaisOrdenados = [...animais].sort((a, b) => {
+    if (a.especie.toLowerCase() < b.especie.toLowerCase()) return -1;
+    if (a.especie.toLowerCase() > b.especie.toLowerCase()) return 1;
+    // se a espécie for igual, ordenar pelo nome do animal
+    if (a.nome.toLowerCase() < b.nome.toLowerCase()) return -1;
+    if (a.nome.toLowerCase() > b.nome.toLowerCase()) return 1;
+    return 0;
+  });
+
+  animaisOrdenados.forEach(a => {
     const opt = document.createElement('option');
     opt.value = a.id;
     opt.textContent = `${capitalize(a.especie)} (${capitalize(a.nome)})`;
@@ -142,8 +212,6 @@ function atualizarAnimais() {
   // Atualiza histórico quando mudar seleção
   animalSelect.addEventListener('change', renderHistorico);
 }
-
-
 
 // Atualizar histórico quando selecionar animal
 animalSelect.addEventListener('change', () => {
@@ -443,7 +511,16 @@ function renderAnimaisCadastrados() {
     });
 
     especieCard.addEventListener('click', () => {
-      animalGrid.style.display = animalGrid.style.display === 'grid' ? 'none' : 'grid';
+      const isOpen = animalGrid.style.display === 'grid';
+
+      // Fecha todos os grids
+      const todosGrids = document.querySelectorAll('.animal-grid');
+      todosGrids.forEach(g => g.style.display = 'none');
+
+      // Se não estava aberto antes, abre agora
+      if (!isOpen) {
+        animalGrid.style.display = 'grid';
+      }
     });
 
     animaisCadastradosDiv.appendChild(especieCard);
@@ -458,3 +535,13 @@ renderVermifugos();
 atualizarAnimais();
 renderAnimaisCadastrados();
 renderHistorico();
+
+// ===== RESETAR FORMULÁRIO AO CARREGAR A PÁGINA =====
+window.addEventListener('load', () => {
+  const campos = [nomeAnimal, proprietario, raca, idade, especieInput, sexoInput, pesoInput, enderecoInput, cpfInput, telefoneInput];
+  campos.forEach(c => {
+    c.value = '';
+    c.style.borderColor = '#c8e6c9';
+  });
+  sexoInput.value = '';
+});
